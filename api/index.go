@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/jibaru/go-vercel-template/internal/router"
+	"github.com/jibaru/go-vercel-template/core/router"
 )
 
 var mux = router.Server()
