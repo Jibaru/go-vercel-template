@@ -2,6 +2,7 @@ package router
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -23,7 +24,7 @@ func Server() *http.ServeMux {
 	}
 
 	for _, route := range routes {
-		mux.HandleFunc(route.Path, methodHandler(route.Method, route.Handler))
+		mux.HandleFunc(fmt.Sprintf("%v %v", route.Method, route.Path), route.Handler)
 	}
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -31,16 +32,6 @@ func Server() *http.ServeMux {
 	})
 
 	return mux
-}
-
-func methodHandler(method string, handler http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != method {
-			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-			return
-		}
-		handler(w, r)
-	}
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
